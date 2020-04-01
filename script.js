@@ -1,87 +1,81 @@
 //getting access to html elements using JS DOM maniplation 
 var startQuiz = document.getElementById("start");
 var questionTitle = document.getElementById('question-title'); 
-var choice1 = document.getElementById('choice1'); 
-var choice2 = document.getElementById('choice2'); 
-var choice3 = document.getElementById('choice3'); 
-var choice4 = document.getElementById('choice4'); 
+var a = document.getElementById('choice1'); 
+var b = document.getElementById('choice2'); 
+var c = document.getElementById('choice3'); 
+var d = document.getElementById('choice4'); 
+var answer = document.getElementById('answer');
+var time = document.getElementById('time');
+var score = document.getElementById('final-score');
 
-
-//displaying the questions
+//global variables 
 var currentIndex = 0; 
+var currentTime = 75;  
+var interval;
+
+//when start button is clicked, this will 
+//trigger the first Q to appear & start timer.  
 startQuiz.addEventListener("click", function() {
-    // use event delegation here: maybe call to another function. 
-    enableClicks();
-    if(currentIndex === 0) {
-        questionTitle.innerHTML = questions[0].q; 
-        choice1.innerHTML = questions[0].o.a;
-        choice2.innerHTML  = questions[0].o.b;
-        choice3.innerHTML  = questions[0].o.c;
-        choice4.innerHTML  = questions[0].o.d;
-        currentIndex++
-        startQuiz.innerHTML = 'continue';
-    } else if(currentIndex === questions.length - 1){ 
-        questionTitle.innerHTML = questions[questions.length - 1].q; 
-        choice1.innerHTML  = questions[questions.length - 1].o.a;
-        choice2.innerHTML  = questions[questions.length - 1].o.b;
-        choice3.innerHTML  = questions[questions.length - 1].o.c;
-        choice4.innerHTML  = questions[questions.length - 1].o.d;
-        startQuiz.innerHTML = 'start new quiz'; //might change
-    } else {
-        newQuestion(currentIndex);
-        currentIndex++
-    }
-})
+    generateQuestion(currentIndex);
+    timer();
+    enableClicks(); 
+}); 
 
-function newQuestion(currentIndex) {
-    questionTitle.innerHTML = questions[currentIndex].q; 
-    choice1.innerHTML  = questions[currentIndex].o.a;
-    choice2.innerHTML  = questions[currentIndex].o.b;
-    choice3.innerHTML  = questions[currentIndex].o.c;
-    choice4.innerHTML  = questions[currentIndex].o.d;
-    //call to another function that checks whether the answer is correct or nah 
-    //automatically call the next question --> means how do you update currentIndex and pass back to newQuestion? 
+//the timer function
+function timer() {
+    interval = setInterval(function() {
+       time.innerHTML = currentTime--; 
+       if(answer === 'Incorrect') {
+           currentTime = currentTime - 15; 
+       } 
+       if(currentTime === -1) {
+           clearInterval(interval)
+       } 
+   }, 1000) 
 }
 
-//improvement tip: function enableClicks(choice, currentIndex)? 
+//function to enable clicks
 function enableClicks() {
-    choice1.addEventListener('click', function() {
-        choice1.style.fontWeight = 'bold';
-        checkAnswer(choice1, currentIndex);
-        startQuiz.addEventListener('click', function() {
-            choice1.style.fontWeight = 'normal';
-        })
-    }); 
-    choice2.addEventListener('click', function() { 
-        choice2.style.fontWeight = 'bold';
-        checkAnswer(choice2, currentIndex);
-        startQuiz.addEventListener('click', function() {
-            choice2.style.fontWeight = 'normal';
-        })
-    }); 
-    choice3.addEventListener('click', function() {
-        choice3.style.fontWeight = 'bold';
-        checkAnswer(choice3, currentIndex);
-        startQuiz.addEventListener('click', function() {
-            choice3.style.fontWeight = 'normal';
-        })
-    }); 
-    choice4.addEventListener('click', function() {
-        choice4.style.fontWeight = 'bold';
-        checkAnswer(choice4, currentIndex);
-        startQuiz.addEventListener('click', function() {
-            choice4.style.fontWeight = 'normal';
-        })
-    }); 
+    a.addEventListener('click', function() {
+        generateQuiz(a); 
+    })
+    b.addEventListener('click', function() {
+        generateQuiz(b); 
+    })
+    c.addEventListener('click', function() {
+        generateQuiz(c); 
+    })
+    d.addEventListener('click', function() {
+        generateQuiz(d); 
+    })
+} 
+
+//generates the next question. 
+function generateQuestion(index) {
+    //what does this function do after the last question is answered?
+    if(index === questions.length) {
+        clearInterval(interval);
+        return score.innerHTML = time.innerHTML; 
+    }
+    questionTitle.innerHTML = questions[index].q; 
+    a.innerHTML = questions[index].o.a; 
+    b.innerHTML = questions[index].o.b; 
+    c.innerHTML = questions[index].o.c;
+    d.innerHTML = questions[index].o.d;
 }
 
-function checkAnswer(choice, currentIndex) {
-    correctAnswer = questions[currentIndex].a; 
-    console.log(correctAnswer, choice.innerText); 
-    if(choice.innerText === correctAnswer) {
-        console.log('correct'); 
+//the main function for the quiz. 
+function generateQuiz(UserChoice) {
+    let correctAnswer = questions[currentIndex].a; 
+    if(UserChoice.innerHTML === correctAnswer) {
+        answer.innerHTML = 'Correct';
     } else {
-        console.log('incorrect');
+        answer.innerHTML = 'Incorrect';
+        currentTime = currentTime - 15;
     }
+    currentIndex++; 
+    generateQuestion(currentIndex); 
 }
+
 
