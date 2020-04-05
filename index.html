@@ -6,14 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Coding Quiz</title>
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
   </head>
-
-  <body>
+  //onload method allows you to run functions/code as soon the screen is launched.
+  <body onload='hide()'>
     <div class="scores"><a href="highscores.html">View Highscores</a></div>
-
     <div class="timer">Time: <span id="time">0</span></div>
-
     <div class="wrapper">
       <div id="start-screen" class="start">
         <h1>Coding Quiz Challenge</h1>
@@ -24,8 +22,7 @@
         </p>
         <button id="start">Start Quiz</button>
       </div>
-
-      <div id="questions" class="hide">
+      <div id="questions">
         <h2 id="question-title"></h2>
         <div id='choices' class="choices">
           <p id='choice1'></p>
@@ -33,18 +30,18 @@
           <p id='choice3'></p>
           <p id='choice4'></p>
         </div>
-        <div>
+        <div id="answerStyle">
           <p id='answer'></p>
         </div>
       </div>
-      <div id="end-screen" class="hide">
-        <p>Your final score is <span id="final-score"></span>.</p>
+      <!-- var endScreen = document.getElementbyId('end-screen') -->
+      <div id="end-screen" class="hide"> 
+        <p>Your final score is <span id="final-score"></span></p>
         <p>
           Enter initials: <input type="text" id="initials" max="3" />
           <button id="submit">Submit</button>
         </p>
       </div>
-
       <div id="feedback" class="feedback hide"></div>
     </div>
     <script src="questions.js"></script>
